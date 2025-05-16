@@ -35,17 +35,7 @@ const ReviewList = ({ productId, shopId, reviewsUpdated }) => {
     fetchReviews();
   }, [shopId,productId, reviewsUpdated]); // Add reviewsUpdated to dependency array
 
-  const handleHelpful = async (reviewId, helpful) => {
-    try {
-      await axios.post(
-        `http://localhost:3000/api/reviews/helpful/${reviewId}`,
-        { helpful }
-      );
-      // Optional: re-fetch reviews or update state to reflect changes
-    } catch (error) {
-      console.error("Error marking review as helpful/not helpful:", error);
-    }
-  };
+
 
   const handleUpdate = async (reviewId) => {
     if (!updatedText || updatedText.trim() === "") {
@@ -104,17 +94,23 @@ const ReviewList = ({ productId, shopId, reviewsUpdated }) => {
             data: { email: user?.email },
           }
         );
-        setReviews(reviews.filter((review) => review._id !== reviewId)); // Remove review from UI
-
+        setReviews(reviews.filter((review) => review._id !== reviewId));
+  
         toast.success("Review deleted successfully!", {
           position: "top-right",
-          autoClose: 5000, // Duration for the toast to be visible
+          autoClose: 5000,
         });
       } catch (error) {
         console.error("Error deleting review:", error);
+  
+        toast.error("Error deleting review", {
+          position: "top-right",
+          autoClose: 5000,
+        });
       }
     }
   };
+  
 
   return (
     <div className="space-y-4">
